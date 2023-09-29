@@ -1,0 +1,93 @@
+<mat-toolbar class="toolbar">
+  <i
+    class="fa-solid fa-image"
+    style="display: flex; align-items: flex-start"
+  ></i>
+  <span class="portada">Portada</span>
+  <span class="spacer"></span>
+  <i class="fa fa-info-circle" style="display: flex; align-items: flex-end"></i>
+</mat-toolbar>
+
+<div class="container">
+  <div class="contenedor">
+    <span class="portada-actual">Portada Actual</span>
+    <div class="image-container">
+      <img src="{{ imageSelected.webformatURL }}" alt="" />
+      <span>{{ size }}</span>
+      <button mat-stroked-button class="save">
+        <i class="fas fa-save"></i>Guardar cambios
+      </button>
+    </div>
+  </div>
+  <div class="lista_imagenes">
+    <div class="upload">
+      <h3>Cambiar Portada</h3>
+      <span>Puede subir una imagen nueva de portada</span>
+      <button
+        type="button"
+        class="searchButton"
+        mat-raised-button
+        (click)="fileInput.click()"
+      >
+        <i class="fas fa-upload"></i>
+        Subir Portada
+      </button>
+      <input
+        hidden
+        (change)="onFileSelected()"
+        #fileInput
+        type="file"
+        id="file"
+      />
+    </div>
+    <hr class="separator" />
+    <div class="buscar">
+      <!-- <mat-form-field class="formField"> -->
+      <input
+        (keyup.enter)="searchImage(searchQuery)"
+        class="search formField"
+        matInput
+        [(ngModel)]="searchQuery"
+      />
+      <!-- </mat-form-field> -->
+      <button
+        mat-stroked-button
+        class="searchButton"
+        (click)="searchImage(searchQuery)"
+      >
+        Buscar Imágenes
+      </button>
+      <div *ngIf="searching">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+    </div>
+    <hr class="separator" />
+    <div>
+      <mat-card style="width: 100%">
+        <div *ngIf="imagesFound === false && error === true">
+          <span>{{ messageError }}</span>
+        </div>
+        <div *ngIf="imagesFound">
+          <div *ngIf="error === true">
+            <span>{{ messageError }}</span>
+          </div>
+          <div *ngIf="error === false">
+            <h4 mat-card-subtitle>Resultados según su búsqueda</h4>
+            <div class="carrousel">
+              <div *ngFor="let image of images">
+                <!-- <button class="botones_fotos" (click)="imageIsSelected(image)"> -->
+                <a href="{{ image.pageUrl }}" target="_blank"></a>
+                <img
+                  src="{{ image.webformatURL }}"
+                  alt=""
+                  (click)="imageIsSelected(image)"
+                />
+                <!-- </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
